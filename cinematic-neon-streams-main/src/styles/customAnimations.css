@@ -1,0 +1,372 @@
+/* Custom animations for the website */
+
+/* Hide scrollbars for auto-scrolling elements */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Slow pulse animation for "Most Popular" badge */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(236, 72, 153, 0.8);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s infinite;
+}
+
+/* Enhanced floating animation */
+@keyframes float-enhanced {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Glow pulse animation */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.8), 0 0 40px rgba(139, 92, 246, 0.3);
+  }
+}
+
+.animate-pulse-glow {
+  animation: glow-pulse 2s infinite;
+}
+
+/* Enhanced fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Additional security-related CSS */
+/* This helps prevent text selection for security */
+.secure-content {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Hide content from view until ready */
+.content-protected {
+  content-visibility: auto;
+}
+
+/* Special effect for the most popular plan */
+.popular-plan {
+  position: relative;
+  overflow: hidden;
+}
+
+.popular-plan::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}
+
+/* Enhanced Neon Cursor */
+.neon-cursor {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+  background: rgba(139, 92, 246, 0.15);
+  box-shadow: 
+    0 0 15px rgba(139, 92, 246, 0.8),
+    0 0 30px rgba(139, 92, 246, 0.5),
+    0 0 45px rgba(139, 92, 246, 0.3);
+  filter: blur(1px);
+}
+
+/* Hide cursor on mobile */
+@media (max-width: 768px) {
+  .neon-cursor {
+    display: none;
+  }
+  
+  /* Reset normal cursor behavior on mobile */
+  a, button, input, textarea, select, [role="button"] {
+    cursor: pointer;
+  }
+  
+  body {
+    cursor: auto;
+  }
+}
+
+/* Cursor inner circle */
+.neon-cursor::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 1);
+  filter: blur(0);
+}
+
+/* Enhanced hover effect */
+.neon-cursor.hovering {
+  width: 50px;
+  height: 50px;
+  background: rgba(217, 70, 239, 0.2);
+  box-shadow: 
+    0 0 20px rgba(217, 70, 239, 0.9),
+    0 0 40px rgba(217, 70, 239, 0.7),
+    0 0 60px rgba(217, 70, 239, 0.3);
+  filter: blur(2px);
+}
+
+/* Create a subtle trail effect */
+.neon-cursor::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, rgba(139, 92, 246, 0) 70%);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+/* Interactive cursor glow for different elements */
+.neon-cursor.hovering-button {
+  background: rgba(30, 174, 219, 0.2);
+  box-shadow: 
+    0 0 20px rgba(30, 174, 219, 0.8),
+    0 0 40px rgba(30, 174, 219, 0.5);
+}
+
+.neon-cursor.hovering-link {
+  background: rgba(34, 197, 94, 0.2);
+  box-shadow: 
+    0 0 20px rgba(34, 197, 94, 0.8),
+    0 0 40px rgba(34, 197, 94, 0.5);
+}
+
+/* Cursor trail effect */
+@keyframes cursorTrail {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.cursor-trail {
+  position: fixed;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.2);
+  pointer-events: none;
+  z-index: 9998;
+  animation: cursorTrail 0.8s ease-out forwards;
+}
+
+/* Mobile Responsiveness Improvements */
+@media (max-width: 640px) {
+  .btn-primary, .btn-secondary, .btn-accent {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 0.875rem;
+  }
+  
+  h1 {
+    font-size: 2rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  .cursor-trail {
+    display: none;
+  }
+}
+
+/* Improve loading animations */
+@keyframes loadingPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.loading-pulse {
+  animation: loadingPulse 1.5s infinite;
+}
+
+/* Additional neon animations for cards */
+@keyframes shine {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+.animate-shine {
+  animation: shine 2s infinite;
+}
+
+@keyframes gradient-x {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 3s ease infinite;
+}
+
+.bg-size-200 {
+  background-size: 200% 200%;
+}
+
+/* Enhanced neon glow effects */
+.neon-border {
+  position: relative;
+}
+
+.neon-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, var(--box-neon-purple), var(--box-neon-blue), var(--box-neon-pink), var(--box-neon-purple));
+  background-size: 300% 300%;
+  animation: gradient-border 8s ease infinite;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+@keyframes gradient-border {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Enhanced card glow effects */
+.neon-card-hover {
+  transition: all 0.3s ease;
+}
+
+.neon-card-hover:hover {
+  box-shadow: 
+    0 0 10px rgba(139, 92, 246, 0.4),
+    0 0 20px rgba(139, 92, 246, 0.2),
+    0 0 30px rgba(139, 92, 246, 0.1);
+  transform: translateY(-5px);
+}
+
+.neon-text-glow {
+  text-shadow: 
+    0 0 5px rgba(255, 255, 255, 0.5),
+    0 0 10px rgba(139, 92, 246, 0.5),
+    0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+/* Glow on hover for plan cards */
+.plan-card-glow {
+  position: relative;
+}
+
+.plan-card-glow::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.4) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: inherit;
+  filter: blur(20px);
+}
+
+.plan-card-glow:hover::after {
+  opacity: 1;
+}
