@@ -1,29 +1,38 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// Lazy load pages for better performance
+const Index = lazy(() => import('./pages/Index'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const Payment = lazy(() => import('./pages/Payment'));
+const ParticleBackground = lazy(() => import('./components/ParticleBackground'));
 import { LanguageProvider } from './contexts/LanguageContext';
-import { Analytics } from '@vercel/analytics/react';
-
 import './App.css';
 import './styles/customAnimations.css';
 import './styles/loadingStyles.css';
-
-const Index = lazy(() => import('./pages/Index'));
-const Payment = lazy(() => import('./pages/Payment'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const ParticleBackground = lazy(() => import('./components/ParticleBackground'));
+import { Analytics } from "@vercel/analytics/next"
 
 function App() {
+  // Dark mode is always enabled for this design
   const [isDarkMode] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Simple mobile detection
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   return (
     <>
       <div className="relative min-h-screen font-sans">
-        <Suspense fallback={<></>}>
-          <ParticleBackground />
-        </Suspense>
+        {/* Only show ParticleBackground on non-mobile for better INP */}
+        {!isMobile && (
+          <Suspense fallback={null}>
+            <ParticleBackground />
+          </Suspense>
+        )}
         <LanguageProvider>
           <Router>
-            <Suspense fallback={<div className="text-white text-center pt-20">Loading...</div>}>
+            <Suspense fallback={<div className="loading">Loading...</div>}>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/payment" element={<Payment />} />
@@ -37,7 +46,4 @@ function App() {
     </>
   );
 }
-
 export default App;
-
-
