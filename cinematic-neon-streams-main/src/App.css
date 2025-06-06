@@ -5,6 +5,15 @@
   text-align: center;
 }
 
+/* Make #root full width and remove padding on mobile */
+@media (max-width: 768px) {
+  #root {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
 /* Enhanced Neon Button Styles */
 .neon-button {
   position: relative;
