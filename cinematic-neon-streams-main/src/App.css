@@ -1,4 +1,3 @@
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -358,5 +357,27 @@
   }
   20%, 100% {
     transform: rotate(30deg) translateX(100%);
+  }
+}
+
+/* Optimize animations and effects for mobile users */
+@media (max-width: 768px) {
+  /* Reduce or pause heavy animations on mobile for better INP */
+  .neon-button::after,
+  .neon-card::before,
+  .floating,
+  .pulse,
+  .logo,
+  .shine-effect::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    animation-play-state: paused !important;
+    opacity: 1 !important;
+  }
+
+  /* Optionally, reduce blur for glass morphism on mobile */
+  .glass-morphism {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 }
