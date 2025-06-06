@@ -31,8 +31,10 @@ interface ChannelsAndMoviesSectionProps {
 
 const Index = () => {
   const { t } = useLanguage();
-  
-  // Add scroll animation observer
+
+  // Detect mobile device
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   useEffect(() => {
     // Show loading overlay for a brief period for the enhanced loading effect
     const loadingTimeout = setTimeout(() => {
@@ -45,94 +47,98 @@ const Index = () => {
         }, 500);
       }
     }, 2000);
-    
+
     // Add body class to prevent scrolling during loading
     document.body.classList.add('overflow-hidden');
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
-      });
-    }, {
-      threshold: 0.1, // Trigger when at least 10% of the element is visible
-      rootMargin: '0px 0px -10% 0px' // Slightly before the element enters the viewport
-    });
 
-    const fadeElements = document.querySelectorAll(".fade-in-up, .reveal-animation");
-    fadeElements.forEach((element) => {
-      observer.observe(element);
-    });
+    // Only enable scroll animations and cursor effects on non-mobile devices
+    let observer: IntersectionObserver | null = null;
+    let fadeElements: NodeListOf<Element> | Element[] = [];
 
-    // Smooth scroll behavior
-    document.documentElement.style.scrollBehavior = "smooth";
+    if (!isMobile) {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -10% 0px'
+      });
 
-    // Initialize enhanced cursor effect
-    const cursorInit = () => {
-      const cursor = document.createElement('div');
-      cursor.className = "neon-cursor";
-      document.body.appendChild(cursor);
-      
-      const moveCursor = (e: MouseEvent) => {
-        cursor.style.left = `${e.clientX}px`;
-        cursor.style.top = `${e.clientY}px`;
-      };
-      
-      const activateCursor = (e: MouseEvent) => {
-        const target = e.target as HTMLElement;
-        cursor.classList.add("hovering");
-        
-        // Special styling based on element type
-        if (target.tagName === 'BUTTON' || target.closest('button')) {
-          cursor.classList.add("hovering-button");
-        } else if (target.tagName === 'A' || target.closest('a')) {
-          cursor.classList.add("hovering-link");
-        }
-      };
-      
-      const deactivateCursor = () => {
-        cursor.classList.remove("hovering", "hovering-button", "hovering-link");
-      };
-      
-      document.addEventListener('mousemove', moveCursor);
-      
-      const interactiveElements = document.querySelectorAll('a, button, input, select, textarea');
-      interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', activateCursor);
-        el.addEventListener('mouseleave', deactivateCursor);
+      fadeElements = document.querySelectorAll(".fade-in-up, .reveal-animation");
+      fadeElements.forEach((element) => {
+        observer!.observe(element);
       });
-      
-      // Create futuristic trail effect
-      document.addEventListener('mousemove', (e) => {
-        // Throttle to avoid performance issues
-        if (Math.random() > 0.8) {
-          const trail = document.createElement('div');
-          trail.className = 'cursor-trail';
-          trail.style.left = `${e.clientX}px`;
-          trail.style.top = `${e.clientY}px`;
-          document.body.appendChild(trail);
-          
-          // Remove trail after animation completes
-          setTimeout(() => {
-            if (document.body.contains(trail)) {
-              document.body.removeChild(trail);
-            }
-          }, 600);
-        }
-      });
-    };
-    
-    // Call cursor init with a slight delay to ensure DOM is ready
-    setTimeout(cursorInit, 100);
+
+      // Smooth scroll behavior
+      document.documentElement.style.scrollBehavior = "smooth";
+
+      // Initialize enhanced cursor effect
+      const cursorInit = () => {
+        const cursor = document.createElement('div');
+        cursor.className = "neon-cursor";
+        document.body.appendChild(cursor);
+
+        const moveCursor = (e: MouseEvent) => {
+          cursor.style.left = `${e.clientX}px`;
+          cursor.style.top = `${e.clientY}px`;
+        };
+
+        const activateCursor = (e: MouseEvent) => {
+          const target = e.target as HTMLElement;
+          cursor.classList.add("hovering");
+
+          if (target.tagName === 'BUTTON' || target.closest('button')) {
+            cursor.classList.add("hovering-button");
+          } else if (target.tagName === 'A' || target.closest('a')) {
+            cursor.classList.add("hovering-link");
+          }
+        };
+
+        const deactivateCursor = () => {
+          cursor.classList.remove("hovering", "hovering-button", "hovering-link");
+        };
+
+        document.addEventListener('mousemove', moveCursor);
+
+        const interactiveElements = document.querySelectorAll('a, button, input, select, textarea');
+        interactiveElements.forEach(el => {
+          el.addEventListener('mouseenter', activateCursor);
+          el.addEventListener('mouseleave', deactivateCursor);
+        });
+
+        // Create futuristic trail effect
+        document.addEventListener('mousemove', (e) => {
+          if (Math.random() > 0.8) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = `${e.clientX}px`;
+            trail.style.top = `${e.clientY}px`;
+            document.body.appendChild(trail);
+
+            setTimeout(() => {
+              if (document.body.contains(trail)) {
+                document.body.removeChild(trail);
+              }
+            }, 600);
+          }
+        });
+      };
+
+      setTimeout(cursorInit, 100);
+    }
 
     return () => {
       clearTimeout(loadingTimeout);
-      fadeElements.forEach((element) => {
-        observer.unobserve(element);
-      });
+      if (observer && fadeElements.length) {
+        fadeElements.forEach((element) => {
+          observer!.unobserve(element);
+        });
+      }
     };
-  }, []);
+  }, [isMobile]);
 
   // Define movie posters to be added to the MovieShowcase component
   const moviePosters = [
@@ -340,23 +346,25 @@ const Index = () => {
       </div>
 
       {/* Enhanced Animated Background */}
-      <div className="animated-bg"></div>
-      <div className="animated-grid">
-        <div className="grid-line"></div>
-        <div className="grid-line"></div>
-        <div className="grid-line"></div>
-        <div className="grid-line"></div>
-        <div className="grid-line"></div>
-      </div>
-      <ParticleBackground />
-      
-      {/* Enhanced Cyberpunk Light Beams */}
-      <div className="light-beam light-beam-1"></div>
-      <div className="light-beam light-beam-2"></div>
-      <div className="light-beam light-beam-3"></div>
-      
-      {/* Neural Network Grid Effect */}
-      <div className="neural-grid"></div>
+      {!isMobile && (
+        <>
+          <div className="animated-bg"></div>
+          <div className="animated-grid">
+            <div className="grid-line"></div>
+            <div className="grid-line"></div>
+            <div className="grid-line"></div>
+            <div className="grid-line"></div>
+            <div className="grid-line"></div>
+          </div>
+          <ParticleBackground />
+          {/* Enhanced Cyberpunk Light Beams */}
+          <div className="light-beam light-beam-1"></div>
+          <div className="light-beam light-beam-2"></div>
+          <div className="light-beam light-beam-3"></div>
+          {/* Neural Network Grid Effect */}
+          <div className="neural-grid"></div>
+        </>
+      )}
 
       {/* Navigation */}
       <div id="home"></div>
@@ -481,7 +489,7 @@ const Index = () => {
       <WhatsAppButton 
         phoneNumber="212643264633"
         text="Chat on WhatsApp"
-        className="fixed bottom-6 right-6 z-50 animate-float"
+        className={`fixed bottom-6 right-6 z-50${isMobile ? '' : ' animate-float'}`}
       />
       
       {/* Language Notice */}
