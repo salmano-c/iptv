@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -77,16 +76,23 @@ const Hero = () => {
               </h2>
               
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start mb-8">
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="neon-button text-lg font-semibold px-8 py-6 bg-gradient-to-r from-box-neon-purple to-box-neon-blue hover:from-box-neon-blue hover:to-box-neon-purple transition-all duration-300 rounded-full shadow-glow"
                   aria-label="Start free trial"
+                  asChild
                 >
-                  {t('free_trial')}
+                  <a
+                    href="https://wa.me/212643264633"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {t('free_trial')}
+                  </a>
                 </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg" 
+                <Button
+                  variant="outline"
+                  size="lg"
                   className="text-lg font-semibold px-8 py-6 border-2 border-box-neon-blue hover:bg-box-neon-blue/20 text-white rounded-full transition-all duration-300"
                   aria-label="View pricing plans"
                 >
