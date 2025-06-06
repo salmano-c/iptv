@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -684,4 +683,37 @@ html {
 
 .animate-pulse-slow {
   animation: pulse-slow 8s ease-in-out infinite;
+}
+
+/* Optimize animations and effects for mobile users */
+@media (max-width: 768px) {
+  /* Pause or minimize heavy animations for better INP */
+  .light-beam-1,
+  .light-beam-2,
+  .light-beam-3,
+  .animated-grid .grid-line,
+  .holographic-float,
+  .holographic-float::before,
+  .animate-pulse-glow,
+  .animate-pulse-fast,
+  .animate-float,
+  .fade-in-up,
+  .reveal-animation,
+  .btn-primary::after,
+  .typing-animation,
+  .animate-gradient-x,
+  .animate-shine,
+  .animate-pulse-slow {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    animation-play-state: paused !important;
+    opacity: 1 !important;
+  }
+
+  /* Reduce blur for glass effects on mobile */
+  .glass-card,
+  .language-dropdown {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
 }
