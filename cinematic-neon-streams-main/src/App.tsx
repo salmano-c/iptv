@@ -10,8 +10,6 @@ import './App.css';
 import './styles/customAnimations.css';
 import './styles/loadingStyles.css';
 import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/analytics/react';
-
 function App() {
   // Dark mode is always enabled for this design
   const [isDarkMode] = useState(true);
@@ -31,7 +29,6 @@ function App() {
         </LanguageProvider>
       </div>
        <Analytics />
-      <SpeedInsights />
     </>
   );
 }
