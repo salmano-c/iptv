@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Globe, Tv, ChevronRight, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,18 @@ interface Country {
 const ChannelShowcase = () => {
   const { t, language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 768); // 768px is tailwind's 'md' breakpoint
+  };
+
+  handleResize(); // Run once on load
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
 
   // Array of countries with their channels count and flag codes (similar to raverr.net)
   const countries: Country[] = [
@@ -86,7 +98,7 @@ const ChannelShowcase = () => {
 
   // Total channels count
   const totalChannels = countries.reduce((sum, country) => sum + country.channels, 0);
-
+if (isMobile) return null; // ⛔ Don’t show anything on mobile
   return (
     <section id="channels" className="py-16 lg:py-24 relative glass-morphism">
       {/* Section background with gradient */}
