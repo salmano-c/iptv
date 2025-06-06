@@ -9,7 +9,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import './App.css';
 import './styles/customAnimations.css';
 import './styles/loadingStyles.css';
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   // Dark mode is always enabled for this design
