@@ -370,3 +370,34 @@
 .plan-card-glow:hover::after {
   opacity: 1;
 }
+
+/* Optimize and pause heavy animations for mobile users only */
+@media (max-width: 768px) {
+  /* Pause or drastically reduce all custom animation durations */
+  .animate-pulse-slow,
+  .animate-pulse-glow,
+  .animate-fadeIn,
+  .animate-shine,
+  .animate-gradient-x,
+  .loading-pulse,
+  .neon-border::before,
+  .plan-card-glow::after,
+  .popular-plan::before {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    animation-play-state: paused !important;
+    opacity: 1 !important;
+  }
+
+  /* Hide cursor and cursor trails on mobile (already present, but reinforced) */
+  .neon-cursor,
+  .cursor-trail {
+    display: none !important;
+  }
+
+  /* Optionally, reduce blur for neon effects on mobile for better performance */
+  .neon-cursor,
+  .plan-card-glow::after {
+    filter: blur(1px) !important;
+  }
+}
