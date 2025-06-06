@@ -9,6 +9,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import './App.css';
 import './styles/customAnimations.css';
 import './styles/loadingStyles.css';
+import import { Analytics } from '@vercel/analytics/next';
 
 function App() {
   // Dark mode is always enabled for this design
@@ -28,6 +29,7 @@ function App() {
           </Router>
         </LanguageProvider>
       </div>
+       <Analytics />
     </>
   );
 }
